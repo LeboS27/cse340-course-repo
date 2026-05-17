@@ -1,0 +1,85 @@
+<%- include('./partials/header', { title: title }) %>
+
+<!-- Hero Section -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="container">
+    <div class="hero-content">
+      <h1 id="hero-heading" class="hero-title">
+        Technology<br>
+        <span class="hero-accent">with Purpose</span>
+      </h1>
+      <p class="hero-subtitle">
+        Tech Charities connects skilled developers, designers, and engineers with
+        charitable organizations that need technology to amplify their impact.
+      </p>
+      <div class="hero-actions">
+        <a href="/organizations" class="btn btn-primary">Explore Organizations</a>
+        <a href="/categories" class="btn btn-outline">Browse Categories</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section" aria-label="Platform statistics">
+  <div class="container">
+    <ul class="stats-grid" role="list">
+      <li class="stat-card">
+        <span class="stat-number" aria-label="120 plus">120+</span>
+        <span class="stat-label">Organizations</span>
+      </li>
+      <li class="stat-card">
+        <span class="stat-number" aria-label="480 plus">480+</span>
+        <span class="stat-label">Active Projects</span>
+      </li>
+      <li class="stat-card">
+        <span class="stat-number" aria-label="4">4</span>
+        <span class="stat-label">Focus Areas</span>
+      </li>
+      <li class="stat-card">
+        <span class="stat-number" aria-label="2300 plus">2,300+</span>
+        <span class="stat-label">Volunteers</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="mission-section" aria-labelledby="mission-heading">
+  <div class="container">
+    <h2 id="mission-heading" class="section-title">Our Mission</h2>
+    <p class="section-lead">
+      We believe that technology is one of the most powerful tools for social change.
+      By matching technical expertise with charitable need, we help organizations
+      serve more people, spend less on overhead, and make decisions backed by data.
+    </p>
+    <div class="feature-grid">
+      <article class="feature-card">
+        <div class="feature-icon feature-icon--connect" aria-hidden="true"></div>
+        <h3>Connect</h3>
+        <p>Match your skills with organizations that need exactly what you have to offer.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon feature-icon--build" aria-hidden="true"></div>
+        <h3>Build</h3>
+        <p>Ship real software that solves real problems for communities around the world.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon feature-icon--impact" aria-hidden="true"></div>
+        <h3>Impact</h3>
+        <p>Measure and amplify the difference your contribution makes in people's lives.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section" aria-labelledby="cta-heading">
+  <div class="container">
+    <h2 id="cta-heading">Ready to make an impact?</h2>
+    <p>Browse organizations by focus area and find a project that matches your skills.</p>
+    <a href="/categories" class="btn btn-primary btn-lg">Browse by Category</a>
+  </div>
+</section>
+
+<%- include('./partials/footer') %>

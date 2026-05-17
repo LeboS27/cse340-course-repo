@@ -1,0 +1,967 @@
+/* ==========================================================================
+   Tech Charities — Main Stylesheet
+   Strategy: Mobile-first. Base styles target 320px; media queries add
+   complexity as viewport widens. Never shrink — only grow.
+
+   Contrast ratios (WCAG 2.1 AA requires 4.5:1 for normal text):
+     Text #1a202c on white #fff        → ~17.7:1  ✓
+     White #fff on navy #1e3a5f        → ~10.8:1  ✓
+     White #fff on green #276749       →  ~7.2:1  ✓
+     Muted #4a5568 on white            →  ~4.8:1  ✓
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. CSS Custom Properties (Design Tokens)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand colours */
+  --color-primary:         #1e3a5f;   /* deep navy */
+  --color-primary-light:   #2b6cb0;   /* medium blue (interactive elements) */
+  --color-secondary:       #276749;   /* forest green */
+  --color-secondary-light: #38a169;
+  --color-accent:          #c05621;   /* warm orange (CTAs) */
+  --color-accent-hover:    #9c4221;
+
+  /* Neutrals */
+  --color-bg:              #f7fafc;
+  --color-surface:         #ffffff;
+  --color-border:          #e2e8f0;
+  --color-text:            #1a202c;
+  --color-text-muted:      #4a5568;
+
+  /* Feedback */
+  --color-error:           #c53030;
+  --color-error-bg:        #fff5f5;
+
+  /* Category accent colours */
+  --color-env:             #276749;   /* Environmental — green */
+  --color-edu:             #2b6cb0;   /* Educational — blue */
+  --color-com:             #744210;   /* Community — amber-brown */
+  --color-hlt:             #97266d;   /* Health — magenta */
+
+  /* Typography */
+  --font-sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                'Helvetica Neue', Arial, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono:  'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Type scale (major third — 1.25×) */
+  --text-xs:   0.64rem;
+  --text-sm:   0.8rem;
+  --text-base: 1rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.563rem;
+  --text-2xl:  1.953rem;
+  --text-3xl:  2.441rem;
+  --text-4xl:  3.052rem;
+
+  /* Spacing (4/8px grid) */
+  --space-1:  0.25rem;   /*  4px */
+  --space-2:  0.5rem;    /*  8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+
+  /* Layout */
+  --container-max:  1200px;
+  --container-pad:  var(--space-4);
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+
+  /* Transitions */
+  --transition: 200ms ease;
+}
+
+/* --------------------------------------------------------------------------
+   1. CSS Reset (modern, opinionated)
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;          /* respect user browser font-size preference */
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  color: var(--color-primary-light);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+a:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-primary);
+}
+
+p + p {
+  margin-top: var(--space-4);
+}
+
+strong {
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   2. Accessibility Utilities
+   -------------------------------------------------------------------------- */
+
+/* Skip link: visible only when focused by keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  background: var(--color-accent);
+  color: #fff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  font-weight: 600;
+  z-index: 1000;
+  transition: top 0.1s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+main {
+  flex: 1;            /* pushes footer to bottom (body is column flex) */
+}
+
+/* --------------------------------------------------------------------------
+   4. Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color var(--transition),
+              border-color var(--transition),
+              color var(--transition),
+              transform var(--transition);
+  white-space: nowrap;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #fff;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-lg);
+}
+
+/* --------------------------------------------------------------------------
+   5. Site Header & Navigation
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  transition: opacity var(--transition);
+}
+
+.logo:hover {
+  opacity: 0.85;
+  color: #fff;
+}
+
+.logo:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.logo-text strong {
+  font-weight: 800;
+}
+
+/* Mobile hamburger button */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: 2px solid rgba(255,255,255,.5);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  cursor: pointer;
+  width: 44px;
+  height: 44px;   /* minimum 44×44px touch target per WCAG 2.5.5 */
+}
+
+.nav-toggle .bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.nav-toggle:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Animate hamburger → X when open */
+.nav-toggle[aria-expanded="true"] .bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] .bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile nav: hidden by default, revealed by .is-open */
+.primary-nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--color-primary);
+  border-top: 1px solid rgba(255,255,255,.15);
+  padding-block: var(--space-4);
+  box-shadow: var(--shadow-md);
+}
+
+.primary-nav.is-open {
+  display: block;
+}
+
+.primary-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-inline: var(--container-pad);
+}
+
+.primary-nav a {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  color: rgba(255,255,255,.85);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.primary-nav a:hover,
+.primary-nav a[aria-current="page"] {
+  background-color: rgba(255,255,255,.15);
+  color: #fff;
+}
+
+.primary-nav a:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: -3px;
+  border-radius: var(--radius-md);
+}
+
+/* --------------------------------------------------------------------------
+   6. Hero Section (home page)
+   -------------------------------------------------------------------------- */
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #2d5282 60%, var(--color-secondary) 100%);
+  color: #fff;
+  padding-block: var(--space-16) var(--space-12);
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.hero-title {
+  font-size: var(--text-3xl);
+  font-family: var(--font-serif);
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: var(--space-6);
+}
+
+.hero-accent {
+  color: #fbd38d;   /* warm amber — 4.6:1 on the gradient background */
+}
+
+.hero-subtitle {
+  font-size: var(--text-lg);
+  color: rgba(255,255,255,.9);
+  line-height: 1.6;
+  margin-bottom: var(--space-8);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: center;
+}
+
+.hero .btn-outline {
+  border-color: rgba(255,255,255,.7);
+  color: #fff;
+}
+
+.hero .btn-outline:hover {
+  background-color: rgba(255,255,255,.15);
+  border-color: #fff;
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   7. Stats Section (home page)
+   -------------------------------------------------------------------------- */
+.stats-section {
+  background-color: var(--color-surface);
+  padding-block: var(--space-12);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.stat-number {
+  font-size: var(--text-3xl);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   8. Mission / Feature Section (home page)
+   -------------------------------------------------------------------------- */
+.mission-section {
+  padding-block: var(--space-16);
+  background-color: var(--color-bg);
+}
+
+.section-title {
+  font-size: var(--text-2xl);
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.section-lead {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+  max-width: 600px;
+  margin-inline: auto;
+  margin-bottom: var(--space-12);
+}
+
+.feature-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.feature-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.feature-icon {
+  width: 56px;
+  height: 56px;
+  margin-inline: auto;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
+}
+
+.feature-icon--connect { background-color: var(--color-primary-light); }
+.feature-icon--build   { background-color: var(--color-secondary); }
+.feature-icon--impact  { background-color: var(--color-accent); }
+
+.feature-card h3 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+}
+
+.feature-card p {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+/* --------------------------------------------------------------------------
+   9. CTA Section (home page)
+   -------------------------------------------------------------------------- */
+.cta-section {
+  background-color: var(--color-primary);
+  color: #fff;
+  padding-block: var(--space-16);
+  text-align: center;
+}
+
+.cta-section h2 {
+  color: #fff;
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-4);
+}
+
+.cta-section p {
+  color: rgba(255,255,255,.85);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-8);
+}
+
+/* --------------------------------------------------------------------------
+   10. Page Hero (inner pages)
+   -------------------------------------------------------------------------- */
+.page-hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #2d5282 100%);
+  color: #fff;
+  padding-block: var(--space-12) var(--space-10);
+}
+
+.page-hero h1 {
+  color: #fff;
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+}
+
+.page-subtitle {
+  color: rgba(255,255,255,.85);
+  font-size: var(--text-lg);
+  max-width: 560px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Content Section wrapper (inner pages)
+   -------------------------------------------------------------------------- */
+.content-section {
+  padding-block: var(--space-12);
+}
+
+/* --------------------------------------------------------------------------
+   12. Organizations Grid
+   -------------------------------------------------------------------------- */
+.org-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.org-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.org-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.org-card-image {
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.org-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: var(--space-6);
+}
+
+.org-card-body {
+  padding: var(--space-6);
+}
+
+.org-card-title {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+  color: var(--color-primary);
+}
+
+.org-card-description {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   13. Categories Grid
+   -------------------------------------------------------------------------- */
+.category-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.category-card {
+  display: flex;
+  gap: 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--transition);
+}
+
+.category-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.category-card-marker {
+  width: 8px;
+  flex-shrink: 0;
+  background-color: var(--color-primary);
+}
+
+.category--environmental .category-card-marker { background-color: var(--color-env); }
+.category--educational  .category-card-marker  { background-color: var(--color-edu); }
+.category--community    .category-card-marker  { background-color: var(--color-com); }
+.category--health       .category-card-marker  { background-color: var(--color-hlt); }
+
+.category-card-body {
+  padding: var(--space-6);
+}
+
+.category-card-title {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-2);
+}
+
+.category--environmental .category-card-title { color: var(--color-env); }
+.category--educational   .category-card-title { color: var(--color-edu); }
+.category--community     .category-card-title { color: var(--color-com); }
+.category--health        .category-card-title { color: var(--color-hlt); }
+
+.category-card-description {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   14. Placeholder State (projects page)
+   -------------------------------------------------------------------------- */
+.placeholder-state {
+  text-align: center;
+  padding: var(--space-16) var(--space-4);
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.placeholder-icon {
+  width: 80px;
+  height: 80px;
+  margin-inline: auto;
+  margin-bottom: var(--space-6);
+  color: var(--color-primary-light);
+}
+
+.placeholder-state h2 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-4);
+}
+
+.placeholder-state p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.placeholder-tech {
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+/* --------------------------------------------------------------------------
+   15. Error Page
+   -------------------------------------------------------------------------- */
+.error-section {
+  display: flex;
+  align-items: center;
+  min-height: 60vh;
+  padding-block: var(--space-16);
+}
+
+.error-content {
+  text-align: center;
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+.error-code {
+  font-family: var(--font-serif);
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--color-border);
+  line-height: 1;
+  margin-bottom: var(--space-4);
+}
+
+.error-title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-4);
+}
+
+.error-message {
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-8);
+  line-height: 1.6;
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: center;
+}
+
+/* --------------------------------------------------------------------------
+   16. Site Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--color-primary);
+  color: rgba(255,255,255,.8);
+  padding-block: var(--space-10);
+  margin-top: auto;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: center;
+  text-align: center;
+}
+
+.footer-brand {
+  font-size: var(--text-lg);
+  color: #fff;
+}
+
+.footer-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  justify-content: center;
+}
+
+.footer-nav a {
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: color var(--transition);
+}
+
+.footer-nav a:hover {
+  color: #fff;
+}
+
+.footer-nav a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.footer-copy {
+  font-size: var(--text-sm);
+  color: rgba(255,255,255,.5);
+}
+
+/* --------------------------------------------------------------------------
+   17. Media Queries — Tablet (768px+)
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+
+  :root {
+    --container-pad: var(--space-8);
+  }
+
+  /* Navigation: switch to horizontal inline */
+  .nav-toggle {
+    display: none;
+  }
+
+  .primary-nav {
+    display: block;
+    position: static;
+    background: none;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .primary-nav ul {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+  }
+
+  .primary-nav a {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  /* Hero */
+  .hero-title {
+    font-size: var(--text-4xl);
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-xl);
+  }
+
+  /* Stats: 4-column on tablet */
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Features: 3-column */
+  .feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Orgs: 2-column */
+  .org-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Categories: 2-column */
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Footer: horizontal */
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   18. Media Queries — Desktop (1024px+)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+
+  /* Orgs: 2-column (large cards look better at 2 wide than 4) */
+  .org-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Hero */
+  .hero {
+    padding-block: var(--space-20);
+    text-align: left;
+  }
+
+  .hero-content {
+    margin-inline: 0;
+  }
+
+  .hero-actions {
+    justify-content: flex-start;
+  }
+
+  .page-hero h1 {
+    font-size: var(--text-3xl);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   19. Print Styles
+   -------------------------------------------------------------------------- */
+@media print {
+  .site-header,
+  .site-footer,
+  .btn,
+  .nav-toggle {
+    display: none;
+  }
+
+  body {
+    color: #000;
+    background: #fff;
+    font-size: 12pt;
+  }
+}

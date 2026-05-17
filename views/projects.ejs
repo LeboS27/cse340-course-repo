@@ -1,0 +1,36 @@
+<%- include('./partials/header', { title: title }) %>
+
+<section class="page-hero" aria-labelledby="page-heading">
+  <div class="container">
+    <h1 id="page-heading">Projects</h1>
+    <p class="page-subtitle">
+      Active technology projects working to solve the world's most pressing challenges.
+    </p>
+  </div>
+</section>
+
+<section class="content-section" aria-label="Projects coming soon">
+  <div class="container">
+    <div class="placeholder-state">
+      <div class="placeholder-icon" aria-hidden="true">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="10" y="15" width="60" height="50" rx="4" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M10 27 H70" stroke="currentColor" stroke-width="2.5"/>
+          <rect x="20" y="37" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M44 42 H62 M44 50 H55" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>Projects Coming in Week 2</h2>
+      <p>
+        This page will display projects pulled live from a database.
+        In Week 2 you will set up a SQLite database, write model functions,
+        and query project data to render here dynamically.
+      </p>
+      <p class="placeholder-tech">
+        <strong>Coming soon:</strong> SQL queries &bull; Model layer &bull; Dynamic EJS loops
+      </p>
+    </div>
+  </div>
+</section>
+
+<%- include('./partials/footer') %>

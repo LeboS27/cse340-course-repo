@@ -1,0 +1,23 @@
+<%- include('../partials/header', { title: title }) %>
+
+<section class="error-section" aria-labelledby="error-heading">
+  <div class="container">
+    <div class="error-content">
+      <div class="error-code" aria-hidden="true"><%= status %></div>
+      <h1 id="error-heading" class="error-title">
+        <% if (status === 404) { %>
+          Page Not Found
+        <% } else { %>
+          Something Went Wrong
+        <% } %>
+      </h1>
+      <p class="error-message"><%= message %></p>
+      <div class="error-actions">
+        <a href="/" class="btn btn-primary">Go to Homepage</a>
+        <a href="javascript:history.back()" class="btn btn-outline">Go Back</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

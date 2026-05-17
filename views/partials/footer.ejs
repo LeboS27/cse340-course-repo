@@ -1,0 +1,42 @@
+  </main><!-- /#main-content -->
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <p class="footer-brand">
+          <strong>TechCharities</strong> &mdash; Technology for good.
+        </p>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <ul role="list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/organizations">Organizations</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/categories">Categories</a></li>
+          </ul>
+        </nav>
+        <!-- Dynamic year via JavaScript keeps the copyright current without server-side changes -->
+        <p class="footer-copy">
+          &copy; <span id="copyright-year"></span> Tech Charities. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Copyright year
+    document.getElementById('copyright-year').textContent = new Date().getFullYear()
+
+    // Mobile nav toggle
+    const toggleBtn = document.querySelector('.nav-toggle')
+    const nav = document.getElementById('primary-nav')
+    if (toggleBtn && nav) {
+      toggleBtn.addEventListener('click', () => {
+        const isOpen = toggleBtn.getAttribute('aria-expanded') === 'true'
+        toggleBtn.setAttribute('aria-expanded', String(!isOpen))
+        nav.classList.toggle('is-open')
+      })
+    }
+  </script>
+
+</body>
+</html>

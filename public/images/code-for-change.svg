@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Code for Change organization logo">
+  <title>Code for Change</title>
+  <rect width="280" height="180" fill="#1e3a5f" rx="12"/>
+  <!-- Code brackets -->
+  <text x="90" y="105" font-family="monospace" font-size="64" font-weight="bold" fill="#ffffff" text-anchor="middle">&lt;/&gt;</text>
+  <!-- Heart accent below -->
+  <path d="M140 135 C140 135 125 122 118 115 C112 109 112 99 120 96 C126 93 134 97 140 104 C146 97 154 93 160 96 C168 99 168 109 162 115 C155 122 140 135 140 135Z" fill="#ed8936"/>
+  <!-- Org name -->
+  <text x="140" y="168" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.7)" text-anchor="middle" letter-spacing="1">CODE FOR CHANGE</text>
+</svg>

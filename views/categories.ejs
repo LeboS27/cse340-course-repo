@@ -1,0 +1,29 @@
+<%- include('./partials/header', { title: title }) %>
+
+<section class="page-hero" aria-labelledby="page-heading">
+  <div class="container">
+    <h1 id="page-heading">Categories</h1>
+    <p class="page-subtitle">
+      Explore organizations and projects by focus area.
+    </p>
+  </div>
+</section>
+
+<section class="content-section" aria-label="Category listings">
+  <div class="container">
+    <!-- categories array is passed from categoriesController.buildCategories() -->
+    <ul class="category-grid" role="list">
+      <% categories.forEach(cat => { %>
+        <li class="category-card <%= cat.cssClass %>">
+          <div class="category-card-marker" aria-hidden="true"></div>
+          <div class="category-card-body">
+            <h2 class="category-card-title"><%= cat.name %></h2>
+            <p class="category-card-description"><%= cat.description %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</section>
+
+<%- include('./partials/footer') %>

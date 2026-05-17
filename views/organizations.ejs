@@ -1,0 +1,38 @@
+<%- include('./partials/header', { title: title }) %>
+
+<section class="page-hero" aria-labelledby="page-heading">
+  <div class="container">
+    <h1 id="page-heading">Organizations</h1>
+    <p class="page-subtitle">
+      Technology-focused charitable organizations making a difference worldwide.
+    </p>
+  </div>
+</section>
+
+<section class="content-section" aria-label="Organization listings">
+  <div class="container">
+    <!-- organizations array is passed from baseController.buildOrganizations() -->
+    <ul class="org-grid" role="list">
+      <% organizations.forEach(org => { %>
+        <li class="org-card">
+          <div class="org-card-image">
+            <!-- alt text is set per-organization in the controller for descriptive accessibility -->
+            <img
+              src="<%= org.image %>"
+              alt="<%= org.alt %>"
+              width="280"
+              height="180"
+              loading="lazy"
+            >
+          </div>
+          <div class="org-card-body">
+            <h2 class="org-card-title"><%= org.name %></h2>
+            <p class="org-card-description"><%= org.description %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</section>
+
+<%- include('./partials/footer') %>
